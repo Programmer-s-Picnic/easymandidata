@@ -1,0 +1,28 @@
+name: Publish Easy Mandi APKs from verified build
+on:
+  push:
+    paths:
+      - 'release-artifact.json'
+permissions:
+  contents: write
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download build artifact
+        run: |
+          url=$(jq -r '.artifactUrl' release-artifact.json)
+          curl --fail --location --retry 3 --output /tmp/easy-mandi-build.zip "$url"
+          unzip -j /tmp/easy-mandi-build.zip -d /tmp/easy-mandi-build
+      - name: Verify and install APKs
+        run: |
+          sha256sum -c release-artifact.sha256
+          install -m 644 /tmp/easy-mandi-build/app-arm64-v8a-release.apk releases/EasyMandi-arm64-v1.apk
+          install -m 644 /tmp/easy-mandi-build/app-armeabi-v7a-release.apk releases/EasyMandi-armeabi-v7a-v1.apk
+      - name: Commit exact verified APK files
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add releases/EasyMandi-arm64-v1.apk releases/EasyMandi-armeabi-v7a-v1.apk
+          git diff --cached --quiet || { git commit -m "Publish verified Easy Mandi APKs"; git push; }
