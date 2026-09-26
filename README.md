@@ -21,3 +21,7 @@ The APKs are assembled from `release-parts/` by [the publish workflow](https://g
 8d28e63a7990d79bf08d31cebdc2525f9c3d4fb31281c25797f0a68cff06ec99  EasyMandi-arm64-v1.apk
 a35b7a0a15dc0d9cf39ca6eff33e20b7d073ca4bb50a0c0d30c3ee7f1ee6cd17  EasyMandi-armeabi-v7a-v1.apk
 ```
+
+## Contact and address format
+
+Checkout formats are set in `catalog/products.json` under `checkout`: +91 followed by 10 digits beginning with 6–9, a house/building, a street/locality, optional landmark, and a six-digit Indian PIN. The current demo city is Varanasi; PIN syntax validation does not imply delivery coverage.
