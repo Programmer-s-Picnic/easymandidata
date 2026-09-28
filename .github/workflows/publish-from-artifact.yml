@@ -20,9 +20,11 @@ jobs:
           sha256sum -c release-artifact.sha256
           install -m 644 /tmp/easy-mandi-build/app-arm64-v8a-release.apk releases/EasyMandi-arm64-v1.apk
           install -m 644 /tmp/easy-mandi-build/app-armeabi-v7a-release.apk releases/EasyMandi-armeabi-v7a-v1.apk
+          install -m 644 /tmp/easy-mandi-build/app-arm64-v8a-release.apk releases/EasyMandi-64.apk
+          install -m 644 /tmp/easy-mandi-build/app-armeabi-v7a-release.apk releases/EasyMandi-32.apk
       - name: Commit exact verified APK files
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add releases/EasyMandi-arm64-v1.apk releases/EasyMandi-armeabi-v7a-v1.apk
+          git add releases/EasyMandi-arm64-v1.apk releases/EasyMandi-armeabi-v7a-v1.apk releases/EasyMandi-64.apk releases/EasyMandi-32.apk
           git diff --cached --quiet || { git commit -m "Publish verified Easy Mandi APKs"; git push; }
