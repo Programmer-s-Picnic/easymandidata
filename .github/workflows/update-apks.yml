@@ -1,5 +1,5 @@
 name: Refresh fixed Easy Mandi APKs
-# Source build: 36692156546 (cart item removal, 1.1.2+4)
+# Source build: 36701190971 (cart item removal, 1.1.2+4)
 on:
   push:
     branches: [main]
@@ -17,7 +17,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          run_id=36692156546
+          run_id=36701190971
           gh run watch "$run_id" --repo Programmer-s-Picnic/easymandi --exit-status
           test -n "$run_id"
           mkdir -p /tmp/easymandi-apks
