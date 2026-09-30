@@ -1,5 +1,5 @@
 name: Refresh fixed Easy Mandi APKs
-# Source build: 36562706447 (Easy Mandi 1.1.1+3)
+# Source build: 36583346214 (customer location sharing)
 on:
   push:
     branches: [main]
