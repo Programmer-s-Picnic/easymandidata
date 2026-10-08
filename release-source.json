@@ -1,7 +1,7 @@
 {
   "sourceRepo": "Programmer-s-Picnic/easymandi",
-  "sourceCommit": "30243d7ccbeaad65156666cd68efba96cd9008e5",
+  "sourceCommit": "0d8a4cc3b297b2ddb30a52ec0e439486d16d6e6a",
   "version": "1.3.4+13",
   "releaseRequestedOn": "2026-10-08",
-  "notes": "Use Flutter Android clean-start release with share_plus 10.1.4 compatibility fix; publish only a verified successful build."
+  "notes": "Android v1.3.4+13 with current My Account notifications widget test and share_plus 10 compatibility. Publish only after the GitHub Android job succeeds."
 }
