@@ -10,7 +10,7 @@ permissions:
   contents: write
 concurrency:
   group: easy-mandi-apk-publish
-  cancel-in-progress: false
+  cancel-in-progress: true
 jobs:
   publish:
     runs-on: ubuntu-latest
@@ -25,7 +25,7 @@ jobs:
           version=$(jq -er '.version' release-source.json)
           [[ "$sha" =~ ^[0-9a-f]{40}$ ]]
           test "$version" = "1.3.4+13"
-          for attempt in $(seq 1 45); do
+          for attempt in $(seq 1 8); do
             curl --fail --silent --show-error -H 'Accept: application/vnd.github+json' \
               -H "Authorization: Bearer $GH_TOKEN" \
               "https://api.github.com/repos/Programmer-s-Picnic/easymandi/actions/workflows/android.yml/runs?branch=main&per_page=70" > /tmp/build-runs.json
@@ -33,8 +33,8 @@ jobs:
             failed=$(jq -r --arg sha "$sha" '.workflow_runs | map(select(.head_sha==$sha and (.conclusion=="failure" or .conclusion=="cancelled"))) | first | .conclusion // empty' /tmp/build-runs.json)
             if [ -n "$run" ]; then echo "$run" > /tmp/source-run; break; fi
             if [ -n "$failed" ]; then echo "::error::Android build failed: $failed"; exit 1; fi
-            if [ "$attempt" = "45" ]; then echo "::error::Android build not verified in time"; exit 1; fi
-            sleep 30
+            if [ "$attempt" = "8" ]; then echo "::error::Android build not verified in time"; exit 1; fi
+            sleep 10
           done
       - name: Download verified build artifact
         env:
