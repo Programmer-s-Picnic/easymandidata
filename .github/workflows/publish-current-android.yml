@@ -1,0 +1,76 @@
+name: Publish current Easy Mandi Android APKs
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'release-source.json'
+      - '.github/workflows/publish-current-android.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: easy-mandi-apk-publish
+  cancel-in-progress: false
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Find successful customer APK build
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          sha=$(jq -er '.sourceCommit' release-source.json)
+          version=$(jq -er '.version' release-source.json)
+          [[ "$sha" =~ ^[0-9a-f]{40}$ ]]
+          test "$version" = "1.3.4+13"
+          for attempt in $(seq 1 45); do
+            curl --fail --silent --show-error -H 'Accept: application/vnd.github+json' \
+              -H "Authorization: Bearer $GH_TOKEN" \
+              "https://api.github.com/repos/Programmer-s-Picnic/easymandi/actions/workflows/android.yml/runs?branch=main&per_page=70" > /tmp/build-runs.json
+            run=$(jq -r --arg sha "$sha" '.workflow_runs | map(select(.head_sha==$sha and .conclusion=="success")) | first | .id // empty' /tmp/build-runs.json)
+            failed=$(jq -r --arg sha "$sha" '.workflow_runs | map(select(.head_sha==$sha and (.conclusion=="failure" or .conclusion=="cancelled"))) | first | .conclusion // empty' /tmp/build-runs.json)
+            if [ -n "$run" ]; then echo "$run" > /tmp/source-run; break; fi
+            if [ -n "$failed" ]; then echo "::error::Android build failed: $failed"; exit 1; fi
+            if [ "$attempt" = "45" ]; then echo "::error::Android build not verified in time"; exit 1; fi
+            sleep 30
+          done
+      - name: Download verified build artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          run=$(cat /tmp/source-run)
+          curl --fail --silent --show-error -H "Authorization: Bearer $GH_TOKEN" \
+            "https://api.github.com/repos/Programmer-s-Picnic/easymandi/actions/runs/$run/artifacts" > /tmp/artifacts.json
+          artifact=$(jq -r '.artifacts | map(select(.name=="easy-mandi-apk" and (.expired|not))) | first | .id // empty' /tmp/artifacts.json)
+          test -n "$artifact"
+          curl --fail --location --silent --show-error --retry 3 \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            "https://api.github.com/repos/Programmer-s-Picnic/easymandi/actions/artifacts/$artifact/zip" \
+            -o /tmp/easy-mandi-apk.zip
+          mkdir -p /tmp/easy-mandi-output
+          unzip -j /tmp/easy-mandi-apk.zip -d /tmp/easy-mandi-output
+          for abi in arm64-v8a armeabi-v7a; do
+            file="/tmp/easy-mandi-output/app-$abi-release.apk"
+            test -f "$file"
+            test "$(stat -c '%s' "$file")" -gt 1000000
+            unzip -t "$file" >/dev/null
+          done
+      - name: Publish exact verified 32-bit and 64-bit APKs at permanent URLs
+        run: |
+          set -euo pipefail
+          install -m 644 /tmp/easy-mandi-output/app-arm64-v8a-release.apk releases/EasyMandi-64.apk
+          install -m 644 /tmp/easy-mandi-output/app-armeabi-v7a-release.apk releases/EasyMandi-32.apk
+          install -m 644 /tmp/easy-mandi-output/app-arm64-v8a-release.apk releases/EasyMandi-arm64-v1.apk
+          install -m 644 /tmp/easy-mandi-output/app-armeabi-v7a-release.apk releases/EasyMandi-armeabi-v7a-v1.apk
+          (cd releases && sha256sum EasyMandi-64.apk EasyMandi-32.apk > SHA256SUMS)
+          jq -n --arg commit "$(jq -r .sourceCommit release-source.json)" \
+            --arg version "$(jq -r .version release-source.json)" \
+            --argjson run "$(cat /tmp/source-run)" \
+            '{sourceCommit:$commit,version:$version,workflowRun:$run}' > releases/build.json
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add releases/EasyMandi-64.apk releases/EasyMandi-32.apk releases/EasyMandi-arm64-v1.apk releases/EasyMandi-armeabi-v7a-v1.apk releases/SHA256SUMS releases/build.json
+          git diff --cached --quiet || { git commit -m 'Publish Easy Mandi Android 1.3.4+13 clean-start release'; git push; }
