@@ -9,7 +9,7 @@ on:
 permissions:
   contents: write
 concurrency:
-  group: easy-mandi-apk-publish
+  group: easy-mandi-apk-publish-verified-139
   cancel-in-progress: true
 jobs:
   publish:
