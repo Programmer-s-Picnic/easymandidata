@@ -1,7 +1,7 @@
 {
   "sourceRepo": "Programmer-s-Picnic/easymandi",
-  "sourceCommit": "0d8a4cc3b297b2ddb30a52ec0e439486d16d6e6a",
+  "sourceCommit": "bb4b5f426cd787772b338e0d1f2e2fb517135387",
   "version": "1.3.4+13",
   "releaseRequestedOn": "2026-10-08",
-  "notes": "Android v1.3.4+13 with current My Account notifications widget test and share_plus 10 compatibility. Publish only after the GitHub Android job succeeds."
+  "notes": "Latest Easy Mandi Android 1.3.4+13 source including corrected notification test and workflow trigger; publish only after success."
 }
