@@ -9,7 +9,7 @@ on:
 permissions:
   contents: write
 concurrency:
-  group: easy-mandi-apk-publish-verified-139
+  group: easy-mandi-apk-publish-official-releases
   cancel-in-progress: true
 jobs:
   publish:
@@ -24,8 +24,8 @@ jobs:
           sha=$(jq -er '.sourceCommit' release-source.json)
           version=$(jq -er '.version' release-source.json)
           [[ "$sha" =~ ^[0-9a-f]{40}$ ]]
-          test "$version" = "1.3.4+13"
-          for attempt in $(seq 1 8); do
+          test "$version" = "1.3.5+14"
+          for attempt in $(seq 1 50); do
             curl --fail --silent --show-error -H 'Accept: application/vnd.github+json' \
               -H "Authorization: Bearer $GH_TOKEN" \
               "https://api.github.com/repos/Programmer-s-Picnic/easymandi/actions/workflows/android.yml/runs?branch=main&per_page=70" > /tmp/build-runs.json
@@ -33,7 +33,7 @@ jobs:
             failed=$(jq -r --arg sha "$sha" '.workflow_runs | map(select(.head_sha==$sha and (.conclusion=="failure" or .conclusion=="cancelled"))) | first | .conclusion // empty' /tmp/build-runs.json)
             if [ -n "$run" ]; then echo "$run" > /tmp/source-run; break; fi
             if [ -n "$failed" ]; then echo "::error::Android build failed: $failed"; exit 1; fi
-            if [ "$attempt" = "8" ]; then echo "::error::Android build not verified in time"; exit 1; fi
+            if [ "$attempt" = "50" ]; then echo "::error::Android build not verified in time"; exit 1; fi
             sleep 10
           done
       - name: Download verified build artifact
@@ -73,4 +73,4 @@ jobs:
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add releases/EasyMandi-64.apk releases/EasyMandi-32.apk releases/EasyMandi-arm64-v1.apk releases/EasyMandi-armeabi-v7a-v1.apk releases/SHA256SUMS releases/build.json
-          git diff --cached --quiet || { git commit -m 'Publish Easy Mandi Android 1.3.4+13 clean-start release'; git push; }
+          git diff --cached --quiet || { git commit -m "Publish Easy Mandi Android $(jq -r .version release-source.json) verified release"; git pull --rebase origin main; git push; }
