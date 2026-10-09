@@ -1,7 +1,7 @@
 {
   "sourceRepo": "Programmer-s-Picnic/easymandi",
-  "sourceCommit": "1a1ce5d2ac85d84f5b7ae770554bdc7e110f72fe",
+  "sourceCommit": "57177f55a0e442869a1b8adfd66b05f8141ba356",
   "version": "1.3.9+20",
   "releaseRequestedOn": "2026-10-09",
-  "notes": "Varanasi service localities master: Pandeypur Aktha Taktakpur dropdown first, locality map button, server-validated orders and one-time Android customer test data reset."
+  "notes": "Enforce customer login before checkout on Flutter Android and customer website; Android orders now send a validated Bearer token and registered customer mobile, while the server rejects guest orders. Preserve catalog, cart and bilingual checkout."
 }
