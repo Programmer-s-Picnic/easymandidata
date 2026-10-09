@@ -1,7 +1,7 @@
 {
   "sourceRepo": "Programmer-s-Picnic/easymandi",
-  "sourceCommit": "a9edfc6173806486da3d0769302868eb54e11fa3",
-  "version": "1.3.9+18",
-  "releaseRequestedOn": "2026-10-08",
-  "notes": "Android previously ordered purchases fix: server-first history, full-order fallback for unassigned orders, visible buy-again list and refresh, account isolation. Publish only with green Flutter tests and stable signing."
+  "sourceCommit": "81b45574ccbe0b342b531885b83aa3b12756c9cd",
+  "version": "1.3.9+19",
+  "releaseRequestedOn": "2026-10-09",
+  "notes": "UPI QR-only payment: removed Open UPI app action from Flutter checkout, preserved exact-amount QR and receipt upload; signed APKs must pass Android CI."
 }
