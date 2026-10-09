@@ -1,7 +1,7 @@
 {
   "sourceRepo": "Programmer-s-Picnic/easymandi",
-  "sourceCommit": "1677bcf5b75bcd25caa629d8ced0a2979c21f519",
-  "version": "1.3.8+17",
+  "sourceCommit": "a9edfc6173806486da3d0769302868eb54e11fa3",
+  "version": "1.3.9+18",
   "releaseRequestedOn": "2026-10-08",
-  "notes": "Release fully authenticated Easy Mandi all-order history with accurate IST timestamps. Source corrected for Flutter syntax; publish only after passing build #160."
+  "notes": "Android previously ordered purchases fix: server-first history, full-order fallback for unassigned orders, visible buy-again list and refresh, account isolation. Publish only with green Flutter tests and stable signing."
 }
