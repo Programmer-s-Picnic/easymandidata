@@ -1,7 +1,7 @@
 {
   "sourceRepo": "Programmer-s-Picnic/easymandi",
-  "sourceCommit": "c55c115cae236235fc744235c92c26f25de1f510",
-  "version": "1.3.12+23",
+  "sourceCommit": "fc0e87c2f74988a469efc7ef14701bd7980ab804",
+  "version": "1.3.13+24",
   "releaseRequestedOn": "2026-10-10",
-  "notes": "Official Easy Mandi fresh produce-cart main branding, matching customer APK launcher and header with website favicon, hero and social sharing artwork. Preserve login, orders, payments and permanent APK URLs."
+  "notes": "Verified release: merged customer orders, delivery statuses and QR, permanent order numbers; preserve login and fixed download URLs."
 }
