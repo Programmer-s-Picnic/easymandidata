@@ -1,7 +1,7 @@
 {
   "sourceRepo": "Programmer-s-Picnic/easymandi",
-  "sourceCommit": "8d8c16745bff4b4e973a5c1bcc7a6595517be235",
-  "version": "1.3.14+25",
-  "releaseRequestedOn": "2026-10-10",
-  "notes": "Mandi V1 customer APK: one quantity threshold, dynamic per-product wholesale pricing, savings, and updated order history."
+  "sourceCommit": "e4686b29d340eaa88bc5fec547adbf2eb47fbbdb",
+  "version": "1.3.15+26",
+  "releaseRequestedOn": "2026-10-11",
+  "notes": "Customer app update checker with notification when a newer verified APK is published."
 }
