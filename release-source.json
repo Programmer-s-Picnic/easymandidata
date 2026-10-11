@@ -1,7 +1,7 @@
 {
   "sourceRepo": "Programmer-s-Picnic/easymandi",
-  "sourceCommit": "1ed4c0714f80ab43801373bc28bc5ca67f568f34",
-  "version": "1.3.16+27",
+  "sourceCommit": "0794bab19fc8390a74d731689a78c8ab2347b4b4",
+  "version": "1.3.17+28",
   "releaseRequestedOn": "2026-10-11",
-  "notes": "Customer savings moment, lifetime delivered savings and optional PIN with existing update check."
+  "notes": "Market savings based on Compare-at price, saved order snapshots, optional PIN, bilingual checkout."
 }
