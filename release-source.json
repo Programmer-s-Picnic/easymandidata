@@ -1,7 +1,7 @@
 {
   "sourceRepo": "Programmer-s-Picnic/easymandi",
-  "sourceCommit": "0794bab19fc8390a74d731689a78c8ab2347b4b4",
-  "version": "1.3.17+28",
-  "releaseRequestedOn": "2026-10-11",
-  "notes": "Market savings based on Compare-at price, saved order snapshots, optional PIN, bilingual checkout."
+  "sourceCommit": "8ffc21a07b9b181bb42a2ee50fb3dff49438a1ca",
+  "version": "1.3.18+29",
+  "releaseRequestedOn": "2026-10-12",
+  "notes": "Primary saved addresses, My Addresses management, one-tap checkout default on customer Android."
 }
